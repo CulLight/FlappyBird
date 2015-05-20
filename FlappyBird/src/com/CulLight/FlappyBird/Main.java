@@ -8,6 +8,9 @@ import static org.lwjgl.system.MemoryUtil.*;
 import java.nio.ByteBuffer;
 
 import org.lwjgl.glfw.GLFWvidmode;
+import org.lwjgl.opengl.GLContext;
+
+import com.CulLight.FlappyBird.input.Input;
 
 
 public class Main implements Runnable{
@@ -62,16 +65,30 @@ public class Main implements Runnable{
 		}
 		ByteBuffer vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 		glfwSetWindowPos(window, (GLFWvidmode.width(vidmode) - width) /2 , (GLFWvidmode.height(vidmode) - height) /2);
+		
+		//usually one would call a callback here. however in java one has to create new class
+		//to pass a function (new Input())
+		glfwSetKeyCallback(window, new Input());
+		  
 		glfwMakeContextCurrent(window);
 		glfwShowWindow(window);
+		GLContext.createFromCurrent();
+		
+		glClearColor(1.0f, 0f, 1.0f, 1.0f);
+		glEnable(GL_DEPTH_TEST);
+		System.out.println("OpenGL: " + glGetString(GL_VERSION));
 		
 	}
 	
 	private void update() {
-		glfwPollEvents();		
+		glfwPollEvents();	
+		if (Input.keys[GLFW_KEY_SPACE]) {
+			System.out.println("FLAP!");
+		}
 	}
 	
 	private void render() {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glfwSwapBuffers(window);	
 	}
 	

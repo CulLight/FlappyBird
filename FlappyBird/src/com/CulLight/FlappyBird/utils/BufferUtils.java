@@ -16,6 +16,7 @@ public class BufferUtils {
 		return result;
 	}
 	
+	//float buffer needs 4times memory of float array
 	public static FloatBuffer createFloatBuffer(float[] array) {
 		FloatBuffer result = ByteBuffer.allocateDirect(array.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
 		result.put(array).flip();
